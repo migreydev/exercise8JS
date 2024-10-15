@@ -1,6 +1,7 @@
 let agregarCarrito = document.querySelector(
   ".u-full-width.button-primary.input.agregar-carrito"
 );
+let vaciarCarrito = document.querySelector("#vaciar-carrito");
 
 let carrito = document.querySelector("#carrito");
 
@@ -29,6 +30,7 @@ agregarCarrito.addEventListener("click", (event) => {
       arrayCarro.push(producto); //Se añade al array
     }
   }
+  console.log(arrayCarro);
 });
 
 carrito.addEventListener("mouseenter", (event) => {
@@ -48,10 +50,10 @@ carrito.addEventListener("mouseenter", (event) => {
       cantidad++; //Sumamos una cantidad mas
     }
 
-    //Creamos un elemento i
+    //Creamos un elemento boton
     let deleteProduct = document.createElement("button");
     deleteProduct.className = "borrar-curso"; //Le asociamos la clase
-    deleteProduct.removeChild;
+    deleteProduct.textContent = "X";
 
     //Tomamos la tabla del carrito
     let tablaCarro = document.querySelector("#lista-carrito");
@@ -81,6 +83,16 @@ carrito.addEventListener("mouseenter", (event) => {
     let celdaRemove = document.createElement("td");
     celdaRemove.appendChild(deleteProduct);
 
+    deleteProduct.addEventListener("click", () => {
+      //Encontramos el indice del producto en el array
+      let posicion = arrayCarro.indexOf(producto);
+      // Elimina el producto del array
+      arrayCarro.splice(posicion, 1);
+      tbody.removeChild(fila); // Elimina la fila del carrito
+
+      console.log(arrayCarro);
+    });
+
     //Añadimos las celdas al elemento fila
     fila.appendChild(celdaImg);
     fila.appendChild(celdaNombre);
@@ -92,3 +104,5 @@ carrito.addEventListener("mouseenter", (event) => {
     tbody.appendChild(fila);
   }
 });
+
+vaciarCarrito.addEventListener("click", (event) => {});
