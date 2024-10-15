@@ -2,7 +2,7 @@ let agregarCarrito = document.querySelector(
   ".u-full-width.button-primary.input.agregar-carrito"
 );
 
-let carrito = document.querySelector(".carrito");
+let carrito = document.querySelector("#carrito");
 
 let arrayCarro = [];
 
@@ -29,7 +29,37 @@ agregarCarrito.addEventListener("click", (event) => {
       arrayCarro.push(producto); //Se añade al array
     }
   }
-  console.log(arrayCarro);
 });
 
+carrito.addEventListener("click", (event) => {
+  event.preventDefault();
 
+  for (let i = 0; i < arrayCarro.length; i++) {
+    let producto = arrayCarro[i];
+
+    let img = producto.querySelector("img");
+    let nombre = producto.querySelector("h4").innerText;
+    let precio = producto.querySelector(".precio").innerText;
+
+    let tablaCarro = document.querySelector("#lista-carrito");
+
+    let tbody = tablaCarro.querySelector("tbody");
+
+    let fila = document.createElement("tr");
+
+    let celdaImg = document.createElement("td");
+    celdaImg.appendChild(img);
+
+    let celdaNombre = document.createElement("td");
+    celdaNombre.innerText = nombre;
+
+    let celdaPrecio = document.createElement("td");
+    celdaPrecio.innerText = precio;
+
+    fila.appendChild(celdaImg);
+    fila.appendChild(celdaNombre);
+    fila.appendChild(celdaPrecio);
+
+    tbody.appendChild(fila);
+  }
+});
