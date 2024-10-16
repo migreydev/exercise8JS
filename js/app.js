@@ -1,72 +1,78 @@
-let agregarCarrito = document.querySelector(
+let agregarCarrito = document.querySelectorAll(
   ".u-full-width.button-primary.input.agregar-carrito"
 );
 let vaciarCarrito = document.querySelector("#vaciar-carrito");
 
-let carrito = document.querySelector("#carrito");
+let carrito = document.querySelector("#img-carrito");
 
 let arrayCarro = [];
+let contador = 0;
 
-agregarCarrito.addEventListener("click", (event) => {
-  event.preventDefault();
+for (let i = 0; i < agregarCarrito.length; i++) {
+  let agregarCarritoProducto = agregarCarrito[i];
 
-  // Obtenemos el data-id del botón que fue clicado
-  let productoID = event.currentTarget.getAttribute("data-id");
+  agregarCarritoProducto.addEventListener("click", (event) => {
+    event.preventDefault();
 
-  //Se almacena un array de todos los productos de la clase card
-  let productos = document.querySelectorAll(".card");
+    // Obtenemos el data-id del botón que fue clicado
+    let productoID = event.currentTarget.getAttribute("data-id");
 
-  //Recorremos los productos
-  for (let i = 0; i < productos.length; i++) {
-    let producto = productos[i];
+    //Se almacena un array de todos los productos de la clase card
+    let productos = document.querySelectorAll(".card");
 
-    // Obtenemos el data-id del boton "Agregar Al Carrito" dentro de este producto
-    productoIdActual = producto
-      .querySelector(".u-full-width.button-primary.input.agregar-carrito")
-      .getAttribute("data-id");
+    //Recorremos los productos
+    for (let i = 0; i < productos.length; i++) {
+      let producto = productos[i];
 
-    //Si el data-id del producto seleccionado es igual al actual
-    if (productoIdActual === productoID) {
-      arrayCarro.push(producto); //Se añade al array
+      // Obtenemos el data-id del boton "Agregar Al Carrito" dentro de este producto
+      productoIdActual = producto
+        .querySelector(".u-full-width.button-primary.input.agregar-carrito")
+        .getAttribute("data-id");
+
+      //Si el data-id del producto seleccionado es igual al actual
+      if (productoIdActual === productoID) {
+        arrayCarro.push(producto); //Se añade al array
+      }
     }
-  }
-  console.log(arrayCarro);
-});
+  });
+}
 
 carrito.addEventListener("mouseenter", (event) => {
   event.preventDefault();
+
+  //Tomamos la tabla del carrito
+  let tablaCarro = document.querySelector("#lista-carrito");
+  //Tomamos el body de la tabla del carrito
+
+  let tbody = tablaCarro.querySelector("tbody");
+
+  // Limpiamos el contenido actual del tbody
+  tbody.innerHTML = "";
 
   //Iteramos sobre el array creado anteriormente y que contendra los productos seleccionados
   for (let i = 0; i < arrayCarro.length; i++) {
     let producto = arrayCarro[i];
 
-    let img = producto.querySelector(".imagen-curso.u-full-width"); //Toma la etiqueta img del producto
+    //Creamos un elemento img
+    let img = document.createElement("img");
+    //Creamos un elemento celda para la imagen
+    let celdaImg = document.createElement("td");
+    //Tomamos el src de la imagen y se la asinamos al elemento img creado anteriormente
+    img.src = producto.querySelector(".imagen-curso.u-full-width").src;
+    img.className = producto.querySelector(".imagen-curso.u-full-width"); //Toma la etiqueta img del producto
+    celdaImg.appendChild(img); // Añadir la imagen a la celda
+
     let nombre = producto.querySelector("h4").innerText; //Toma el texto que contiene el titulo del producto
     let precio = producto.querySelector(".precio").innerText; //Toma el precio del producto
-    let cantidad = "";
-
-    //Si el producto es igual al propio producto
-    if (producto === producto) {
-      cantidad++; //Sumamos una cantidad mas
-    }
+    let cantidad = 1;
 
     //Creamos un elemento boton
     let deleteProduct = document.createElement("button");
     deleteProduct.className = "borrar-curso"; //Le asociamos la clase
     deleteProduct.textContent = "X";
 
-    //Tomamos la tabla del carrito
-    let tablaCarro = document.querySelector("#lista-carrito");
-
-    //Tomamos el body de la tabla del carrito
-    let tbody = tablaCarro.querySelector("tbody");
-
     //Creamos un elemento fila
     let fila = document.createElement("tr");
-
-    //Creamos un elemento celda para la imagen
-    let celdaImg = document.createElement("td");
-    celdaImg.appendChild(img); //Añadimos el hijo a la celda imagen
 
     //Creamos un elemento celda del nombre
     let celdaNombre = document.createElement("td");
@@ -105,4 +111,16 @@ carrito.addEventListener("mouseenter", (event) => {
   }
 });
 
-vaciarCarrito.addEventListener("click", (event) => {});
+vaciarCarrito.addEventListener("click", (event) => {
+  event.preventDefault();
+  arrayCarro = [];
+
+  //Tomamos la tabla del carrito
+  let tablaCarro = document.querySelector("#lista-carrito");
+  let tbody = tablaCarro.querySelector("tbody");
+
+  if (tbody) {
+    // Limpiamos el contenido del tbody
+    tbody.innerHTML = "";
+  }
+});
